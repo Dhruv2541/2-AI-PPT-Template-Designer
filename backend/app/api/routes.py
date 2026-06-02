@@ -10,5 +10,7 @@ def health_check():
 
 # Local import to avoid circular dependency
 from app.api.auth import bp as auth_bp
+from app.api.templates import bp as templates_bp
 
 bp.register_blueprint(auth_bp)
+bp.register_blueprint(templates_bp)

@@ -13,6 +13,9 @@ class Template(db.Model):
     description = db.Column(Text, nullable=True)
     thumbnail_url = db.Column(String(255), nullable=True)
     schema_data = db.Column(JSON, nullable=False)
+    category = db.Column(
+        String(100), nullable=True
+    )  # General, Education, Business, etc.
 
     # Marketplace prep
     is_public = db.Column(Boolean, default=False)
@@ -23,3 +26,19 @@ class Template(db.Model):
     updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = db.relationship("User", backref=db.backref("templates", lazy=True))
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "user_id": str(self.user_id) if self.user_id else None,
+            "title": self.title,
+            "description": self.description,
+            "thumbnail_url": self.thumbnail_url,
+            "schema_data": self.schema_data,
+            "category": self.category,
+            "is_public": self.is_public,
+            "price": float(self.price) if self.price else 0.0,
+            "status": self.status,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+        }
